@@ -1,0 +1,24 @@
+{
+  "name": "epoll-api-sdk",
+  "version": "1.0.0",
+  "description": "SDK used for calling remote API endpoints",
+  "main": "build/index.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json",
+    "prepare": "npm run-script build",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CraiovaPD/epoll-api-sdk.git"
+  },
+  "author": "Craiova PD",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/CraiovaPD/epoll-api-sdk/issues"
+  },
+  "homepage": "https://github.com/CraiovaPD/epoll-api-sdk#readme",
+  "peerDependencies": {
+    "rxjs": "6.3.3"
+  }
+}
