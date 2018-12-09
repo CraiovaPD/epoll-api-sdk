@@ -1,9 +1,11 @@
 import {Observable} from 'rxjs';
 
 import {User} from './user/index';
+import {Debate} from './debate/index';
 import {Session} from './session';
 
 export {User as UsersAPI} from './user/index';
+export {Debate as DebatesAPI} from './debate/index';
 
 export interface IHttpRequestOptions {
   params?: {
@@ -95,6 +97,14 @@ export class EPollAPI {
     if (!this._settings)
       throw 'SDK settings not set.';
     return new User(this._http, this._settings);
+  }
+
+  Debates () : Debate {
+    if (!this._http)
+      throw 'SDK HTTP client not set.';
+    if (!this._settings)
+      throw 'SDK settings not set.';
+    return new Debate(this._http, this._settings);
   }
 }
 
