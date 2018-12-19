@@ -1,6 +1,12 @@
 // import {Observable} from 'rxjs';
 
 import {IHttpClient, ISettings} from '../index';
+import { Observable } from 'rxjs';
+import NovabookerAPI from '../index';
+
+// types
+import { IUser } from '../types/users/IUser';
+import { ILoginResponse } from '../types/users/ILoginResponse';
 
 /**
  * Class used for calling remote User API.
@@ -20,17 +26,67 @@ export class User {
   }
 
   /**
+   * Register a new user account.
    *
+   * @returns {ILoginResponse}
+   */
+  register (params: {
+    grantType: String,
+    clientId: String,
+    clientSecret?: string,
+    state: string,
+
+    accountKitCode: string,
+    firstname: string,
+    lastname?: string
+  }) : Observable<ILoginResponse> {
+    return this._http.post(`${this._settings.apiBaseUrl}/user/register`, {
+      body: {
+        grantType: params.grantType,
+        clientId: params.clientId,
+        clientSecret: params.clientSecret,
+        state: params.state,
+        accountKitCode: params.accountKitCode,
+        firstname: params.firstname,
+        lastname: params.lastname
+      }
+    });
+  }
+
+  /**
+   * Get user profile for current session.
    *
    * @returns {IUser}
    */
-  // create (params: {
-  //   phone?: string
-  // }) : Observable<IUser> {
-  //   return this._http.post(`${this._settings.apiBaseUrl}/user`, {
-  //     params: {
-  //       phone: params.phone ? encodeURIComponent(params.phone) : undefined
-  //     }
-  //   });
-  // }
+  getMyUserProfile () : Observable<IUser> {
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.get(`${this._settings.apiBaseUrl}/user/me`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+    });
+  }
+
+  /**
+   * Authenticate user using an AK code.
+   *
+   * @returns {ILoginResponse}
+   */
+  authenticate (params: {
+    grantType: String,
+    clientId: String,
+    clientSecret?: string,
+    state: string,
+    accountKitCode: string
+  }) : Observable<ILoginResponse> {
+    return this._http.post(`${this._settings.apiBaseUrl}/user/oauth`, {
+      body: {
+        grantType: params.grantType,
+        clientId: params.clientId,
+        clientSecret: params.clientSecret,
+        state: params.state,
+        accountKitCode: params.accountKitCode
+      }
+    });
+  }
 }
