@@ -8,5 +8,5 @@ export class Session {
   /**
    * Class constructor.
    */
-  constructor (public token: String) {}
+  constructor (public tokenType: string, public token: String) {}
 }

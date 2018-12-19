@@ -69,8 +69,8 @@ export class EPollAPI {
   /**
    * Start a new session.
    */
-  startSession (token: string) {
-    this._session = new Session(token);
+  startSession (tokenType: string, token: string) {
+    this._session = new Session(tokenType, token);
   }
 
   /**
