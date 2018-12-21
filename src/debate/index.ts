@@ -1,5 +1,6 @@
 import {Observable} from 'rxjs';
 
+import NovabookerAPI from '../index';
 import {IHttpClient, ISettings} from '../index';
 
 import {
@@ -33,7 +34,11 @@ export class Debate {
   createNewPoll (params: {
     title: string
   }) : Observable<IDebate<IPollDebate>> {
+    let session = NovabookerAPI.getActiveSession();
     return this._http.post(`${this._settings.apiBaseUrl}/debate/poll`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
       body: {
         title: params.title
       }
@@ -69,7 +74,11 @@ export class Debate {
     pollId: string,
     reason: string
   }) : Observable<any> {
+    let session = NovabookerAPI.getActiveSession();
     return this._http.post(`${this._settings.apiBaseUrl}/debate/poll/${params.pollId}/option`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
       body: {
         reason: params.reason
       }
@@ -83,7 +92,12 @@ export class Debate {
     pollId: string,
     optionId: string
   }) : Observable<any> {
-    return this._http.delete(`${this._settings.apiBaseUrl}/debate/poll/${params.pollId}/option/${params.optionId}`, {});
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.delete(`${this._settings.apiBaseUrl}/debate/poll/${params.pollId}/option/${params.optionId}`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+    });
   }
 
   /**
@@ -93,7 +107,11 @@ export class Debate {
     pollId: string,
     formData: any
   }) : Observable<any> {
+    let session = NovabookerAPI.getActiveSession();
     return this._http.post(`${this._settings.apiBaseUrl}/debate/poll/${params.pollId}/attachment`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
       body: params.formData
     });
   }
@@ -105,7 +123,12 @@ export class Debate {
     pollId: string,
     attachmentId: string
   }) : Observable<any> {
-    return this._http.delete(`${this._settings.apiBaseUrl}/debate/poll/${params.pollId}/attachment/${params.attachmentId}`, {});
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.delete(`${this._settings.apiBaseUrl}/debate/poll/${params.pollId}/attachment/${params.attachmentId}`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+    });
   }
 
   /**
@@ -115,7 +138,11 @@ export class Debate {
     pollId: string,
     optionId: string
   }) : Observable<any> {
+    let session = NovabookerAPI.getActiveSession();
     return this._http.post(`${this._settings.apiBaseUrl}/debate/poll/${params.pollId}/vote`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
       body: {
         optionId: params.optionId
       }

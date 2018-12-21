@@ -89,4 +89,30 @@ export class User {
       }
     });
   }
+
+  /**
+   * Get user profile by id.
+   *
+   * @returns {IUser}
+   */
+  getUserProfileById (id: string) : Observable<IUser> {
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.get(`${this._settings.apiBaseUrl}/user/${id}`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+    });
+  }
+
+  /**
+   * Delete account of current logged in user.
+   */
+  deleteAccount () {
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.delete(`${this._settings.apiBaseUrl}/user`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+    });
+  }
 }
