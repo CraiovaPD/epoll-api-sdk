@@ -32,7 +32,8 @@ export class Debate {
    * @returns {IDebate<IPollDebate>}
    */
   createNewPoll (params: {
-    title: string
+    title: string,
+    content: string
   }) : Observable<IDebate<IPollDebate>> {
     let session = NovabookerAPI.getActiveSession();
     return this._http.post(`${this._settings.apiBaseUrl}/debate/poll`, {
@@ -40,7 +41,8 @@ export class Debate {
         Authorization: `${session.tokenType} ${session.token}`
       },
       body: {
-        title: params.title
+        title: params.title,
+        content: params.content
       }
     });
   }
