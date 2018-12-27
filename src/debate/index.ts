@@ -4,7 +4,7 @@ import NovabookerAPI from '../index';
 import {IHttpClient, ISettings} from '../index';
 
 import {
-  IDebate, IPollDebate, IDebatePollListItem
+  IDebate, IPollDebate, IDebatePollListItem, DebateState
 } from '../types/debates/IDebate';
 
 /**
@@ -53,12 +53,21 @@ export class Debate {
    * @returns {}
    */
   listPolls (params: {
+    state?: {
+      from: DebateState,
+      to: DebateState
+    },
     limit?: number
   }) : Observable<IDebatePollListItem[]> {
+    let query = {
+      limit: String(params.limit)
+    } as any;
+    if (params.state) {
+      query.stateFrom = String(params.state.from);
+      query.stateTo = String(params.state.to);
+    }
     return this._http.get(`${this._settings.apiBaseUrl}/debate/poll`, {
-      params: {
-        limit: String(params.limit)
-      }
+      params: query
     });
   }
 
