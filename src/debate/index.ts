@@ -160,4 +160,24 @@ export class Debate {
     });
   }
 
+  /**
+   * Update a debate.
+   */
+  updateDebate (params: {
+    debateId: string,
+    newTitle: string,
+    newContent: string
+  }) : Observable<IDebate<any>> {
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.put(`${this._settings.apiBaseUrl}/debate/${params.debateId}`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+      body: {
+        title: params.newTitle,
+        content: params.newContent
+      }
+    });
+  }
+
 }
