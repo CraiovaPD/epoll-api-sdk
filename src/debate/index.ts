@@ -4,7 +4,8 @@ import NovabookerAPI from '../index';
 import {IHttpClient, ISettings} from '../index';
 
 import {
-  IDebate, IPollDebate, IDebatePollListItem, DebateState
+  IDebate, IPollDebate, IDebatePollListItem, DebateState,
+  IDebateAnouncementListItem
 } from '../types/debates/IDebate';
 
 /**
@@ -53,6 +54,7 @@ export class Debate {
    * @returns {}
    */
   listPolls (params: {
+    fromId?: string,
     state?: {
       from: DebateState,
       to: DebateState
@@ -65,6 +67,9 @@ export class Debate {
     if (params.state) {
       query.stateFrom = String(params.state.from);
       query.stateTo = String(params.state.to);
+    }
+    if (params.fromId) {
+      query.fromId = String(params.fromId);
     }
     return this._http.get(`${this._settings.apiBaseUrl}/debate/poll`, {
       params: query
@@ -177,6 +182,89 @@ export class Debate {
         title: params.newTitle,
         content: params.newContent
       }
+    });
+  }
+
+  /**
+   * Create a new anouncement.
+   *
+   * @param {title} - Title to be used when displaying the poll
+   * @param {content} - Full description of the anouncement
+   *
+   * @returns {IDebate<IAnouncementDebate>}
+   */
+  createNewAnouncement (params: {
+    title: string,
+    content: string
+  }) : Observable<IDebate<IPollDebate>> {
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.post(`${this._settings.apiBaseUrl}/debate/anouncement`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+      body: {
+        title: params.title,
+        content: params.content
+      }
+    });
+  }
+
+  /**
+   * Add a new anouncement attachment.
+   */
+  addAnouncementAttachment (params: {
+    anouncementId: string,
+    formData: any
+  }) : Observable<any> {
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.post(`${this._settings.apiBaseUrl}/debate/anouncement/${params.anouncementId}/attachment`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+      body: params.formData
+    });
+  }
+
+  /**
+   * Remove an anouncement attachment.
+   */
+  removeAnouncementAttachment (params: {
+    anouncementId: string,
+    attachmentId: string
+  }) : Observable<any> {
+    let session = NovabookerAPI.getActiveSession();
+    return this._http.delete(`${this._settings.apiBaseUrl}/debate/anouncement/${params.anouncementId}/attachment/${params.attachmentId}`, {
+      headers: {
+        Authorization: `${session.tokenType} ${session.token}`
+      },
+    });
+  }
+
+  /**
+   * List existing anouncements.
+   *
+   * @returns {}
+   */
+  listAnouncements (params: {
+    fromId: string,
+    state?: {
+      from: DebateState,
+      to: DebateState
+    },
+    limit?: number
+  }) : Observable<IDebateAnouncementListItem[]> {
+    let query = {
+      limit: String(params.limit)
+    } as any;
+    if (params.state) {
+      query.stateFrom = String(params.state.from);
+      query.stateTo = String(params.state.to);
+    }
+    if (params.fromId) {
+      query.fromId = String(params.fromId);
+    }
+    return this._http.get(`${this._settings.apiBaseUrl}/debate/anouncement`, {
+      params: query
     });
   }
 
