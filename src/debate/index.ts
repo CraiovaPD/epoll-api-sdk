@@ -84,6 +84,20 @@ export class Debate {
   }
 
   /**
+   * Update a debate's status.
+   */
+  updateDebateState (params: {
+    debateId: string,
+    newState: DebateState
+  }) : Observable<IDebate<any>> {
+    return this._http.put(`${this._settings.apiBaseUrl}/debate/${params.debateId}/state`, {
+      body: {
+        state: String(params.newState)
+      }
+    });
+  }
+
+  /**
    * Add a new poll option.
    */
   addPollOption (params: {
