@@ -246,7 +246,7 @@ export class Debate {
    * @returns {}
    */
   listAnouncements (params: {
-    fromId: string,
+    fromId?: string,
     state?: {
       from: DebateState,
       to: DebateState
